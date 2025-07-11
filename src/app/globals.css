@@ -186,6 +186,100 @@
     background-clip: text;
   }
 
+  /* Cartes de projets avec meilleure visibilité */
+  .glass-card {
+    @apply bg-slate-900/60 backdrop-blur-xl border border-purple-500/30 shadow-2xl;
+    background: linear-gradient(135deg, 
+      rgba(30, 41, 59, 0.8) 0%, 
+      rgba(15, 23, 42, 0.9) 100%);
+    box-shadow: 
+      0 8px 32px rgba(139, 92, 246, 0.1),
+      0 0 0 1px rgba(139, 92, 246, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-card:hover {
+    @apply border-purple-400/50 shadow-purple-500/20;
+    transform: translateY(-4px);
+    box-shadow: 
+      0 20px 40px rgba(139, 92, 246, 0.2),
+      0 0 0 1px rgba(139, 92, 246, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .project-card {
+    @apply relative overflow-hidden rounded-xl transition-all duration-300 ease-out;
+    background: linear-gradient(135deg, 
+      rgba(30, 41, 59, 0.95) 0%, 
+      rgba(15, 23, 42, 0.98) 100%);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+      rgba(139, 92, 246, 0.08) 0%, 
+      rgba(236, 72, 153, 0.08) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+  }
+
+  .project-card:hover::before {
+    opacity: 1;
+  }
+
+  .project-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(139, 92, 246, 0.6);
+    box-shadow: 
+      0 25px 50px rgba(139, 92, 246, 0.3),
+      0 0 0 1px rgba(139, 92, 246, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  /* Amélioration du contraste du texte */
+  .project-title {
+    @apply text-white font-bold text-lg drop-shadow-sm;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .project-description {
+    @apply text-slate-200 leading-relaxed;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .project-tech-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+    background: linear-gradient(135deg, 
+      rgba(139, 92, 246, 0.15) 0%, 
+      rgba(236, 72, 153, 0.15) 100%);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    color: rgba(196, 181, 253, 0.9);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .project-tech-badge:hover {
+    background: linear-gradient(135deg, 
+      rgba(139, 92, 246, 0.35) 0%, 
+      rgba(236, 72, 153, 0.35) 100%);
+    border-color: rgba(139, 92, 246, 0.6);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  }
+
   /* Effet de brillance */
   .shine {
     position: relative;

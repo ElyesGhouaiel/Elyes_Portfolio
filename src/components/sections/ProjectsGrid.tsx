@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Github, ExternalLink, Star } from 'lucide-react'
+import Link from 'next/link'
 
 interface Project {
   id: string
@@ -63,10 +64,10 @@ export function ProjectsGrid({ featuredProjects, allProjects }: ProjectsGridProp
               transition={{ duration: 0.6, delay: index * 0.1 }}
               whileHover={{ y: -10 }}
             >
-              <Card className="bg-black/20 backdrop-blur-lg border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 h-full">
+              <Card className="project-card h-full">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-bold text-white">{project.title}</h3>
+                    <h3 className="project-title">{project.title}</h3>
                     {project.featured && (
                       <Badge className="bg-yellow-500/20 text-yellow-300 border-yellow-500/30">
                         ⭐ Mis en avant
@@ -75,7 +76,7 @@ export function ProjectsGrid({ featuredProjects, allProjects }: ProjectsGridProp
                   </div>
 
                   {project.description && (
-                    <p className="text-purple-200/80 text-sm mb-4 line-clamp-3">
+                    <p className="project-description text-sm mb-4 line-clamp-3">
                       {project.description}
                     </p>
                   )}
@@ -85,16 +86,14 @@ export function ProjectsGrid({ featuredProjects, allProjects }: ProjectsGridProp
                     {project.technologies.slice(0, 3).map((tech) => (
                       <Badge
                         key={tech.technology.id}
-                        variant="outline"
-                        className="text-xs border-purple-500/30 text-purple-300"
+                        className="project-tech-badge text-xs"
                       >
                         {tech.technology.name}
                       </Badge>
                     ))}
                     {project.technologies.length > 3 && (
                       <Badge
-                        variant="outline"
-                        className="text-xs border-purple-500/30 text-purple-300"
+                        className="project-tech-badge text-xs"
                       >
                         +{project.technologies.length - 3}
                       </Badge>
@@ -130,8 +129,12 @@ export function ProjectsGrid({ featuredProjects, allProjects }: ProjectsGridProp
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-purple-500/50 text-purple-300 hover:bg-purple-500/10 flex-1"
-                        onClick={() => window.open(project.githubUrl!, '_blank')}
+                        className="border-purple-500/50 text-purple-300 hover:bg-purple-500/10 hover:text-white transition-colors flex-1"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          console.log('Opening GitHub URL:', project.githubUrl)
+                          window.open(project.githubUrl!, '_blank', 'noopener,noreferrer')
+                        }}
                       >
                         <Github className="w-3 h-3 mr-1" />
                         Code
@@ -141,8 +144,12 @@ export function ProjectsGrid({ featuredProjects, allProjects }: ProjectsGridProp
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-green-500/50 text-green-300 hover:bg-green-500/10 flex-1"
-                        onClick={() => window.open(project.liveUrl!, '_blank')}
+                        className="border-green-500/50 text-green-300 hover:bg-green-500/10 hover:text-white transition-colors flex-1"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          console.log('Opening Live URL:', project.liveUrl)
+                          window.open(project.liveUrl!, '_blank', 'noopener,noreferrer')
+                        }}
                       >
                         <ExternalLink className="w-3 h-3 mr-1" />
                         Demo
@@ -163,13 +170,15 @@ export function ProjectsGrid({ featuredProjects, allProjects }: ProjectsGridProp
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-center mt-12"
           >
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-purple-500/50 text-purple-300 hover:bg-purple-500/10 px-8 py-4"
-            >
-              Voir tous les projets ({allProjects.length})
-            </Button>
+            <Link href="/projects">
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-purple-500/50 text-purple-300 hover:bg-purple-500/10 px-8 py-4"
+              >
+                Voir tous les projets ({allProjects.length})
+              </Button>
+            </Link>
           </motion.div>
         )}
       </div>

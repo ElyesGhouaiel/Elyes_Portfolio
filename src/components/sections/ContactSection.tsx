@@ -111,19 +111,22 @@ export function ContactSection() {
                 {
                   icon: Mail,
                   title: "Email",
-                  value: "contact@monportfolio.fr",
+                  value: "elyesghouaiel@gmail.com",
+                  href: "mailto:elyesghouaiel@gmail.com",
                   color: "from-red-400 to-pink-400"
                 },
                 {
                   icon: Github,
                   title: "GitHub",
-                  value: "github.com/monusername",
+                  value: "github.com/ElyesGhouaiel",
+                  href: "https://github.com/ElyesGhouaiel",
                   color: "from-gray-400 to-slate-400"
                 },
                 {
                   icon: Linkedin,
                   title: "LinkedIn",
-                  value: "linkedin.com/in/monprofil",
+                  value: "linkedin.com/in/elyes-ghouaiel",
+                  href: "https://linkedin.com/in/elyes-ghouaiel",
                   color: "from-blue-400 to-cyan-400"
                 }
               ].map((contact, index) => (
@@ -134,6 +137,7 @@ export function ContactSection() {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   whileHover={{ scale: 1.02 }}
                   className="group cursor-pointer"
+                  onClick={() => window.open(contact.href, '_blank')}
                 >
                   <Card className="bg-black/20 backdrop-blur-lg border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300">
                     <CardContent className="p-6">
@@ -143,7 +147,7 @@ export function ContactSection() {
                         </div>
                         <div>
                           <h4 className="text-white font-semibold">{contact.title}</h4>
-                          <p className="text-purple-300/80 text-sm">{contact.value}</p>
+                          <p className="text-purple-300/80 text-sm group-hover:text-purple-200 transition-colors">{contact.value}</p>
                         </div>
                       </div>
                     </CardContent>
