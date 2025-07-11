@@ -1,0 +1,158 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Modèle User pour l'authentification NextAuth
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  
+  // Champs personnalisés pour l'admin
+  role          String    @default("user") // "admin" ou "user"
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relation avec les projets manuels
+  manualProjects Project[] @relation("UserProjects")
+  
+  @@map(name: "users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map(name: "accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map(name: "sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map(name: "verificationtokens")
+}
+
+// Modèle Project pour tous les projets (GitHub + manuels)
+model Project {
+  id          String   @id @default(cuid())
+  
+  // Informations de base
+  title       String
+  description String?
+  content     String?  // Description détaillée ou README
+  
+  // URLs et liens
+  githubUrl   String?
+  liveUrl     String?
+  demoUrl     String?
+  
+  // Métadonnées GitHub
+  githubId    Int?     @unique // ID du repo GitHub
+  stars       Int?     @default(0)
+  forks       Int?     @default(0)
+  language    String?  // Langage principal détecté par GitHub
+  
+  // Classification
+  type        String   // "github" ou "manual"
+  category    String   // "professional" ou "personal"
+  status      String   @default("active") // "active", "archived", "draft"
+  
+  // Dates
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Fichiers pour projets manuels
+  zipFilePath String?  // Chemin vers le fichier ZIP uploadé
+  thumbnailUrl String? // URL de l'image de preview
+  
+  // Ordre d'affichage et mise en avant
+  featured    Boolean  @default(false)
+  order       Int?     // Ordre d'affichage personnalisé
+  
+  // Relations
+  technologies ProjectTechnology[]
+  
+  // Relations optionnelles
+  userId      String?  // Pour les projets ajoutés manuellement
+  user        User?    @relation("UserProjects", fields: [userId], references: [id])
+  
+  @@map(name: "projects")
+}
+
+// Modèle Technology pour les technologies utilisées
+model Technology {
+  id       String @id @default(cuid())
+  name     String @unique
+  category String // "frontend", "backend", "database", "tool", "language", etc.
+  icon     String? // URL ou nom d'icône
+  color    String? // Couleur associée pour l'affichage
+  
+  // Relations
+  projects ProjectTechnology[]
+  
+  @@map(name: "technologies")
+}
+
+// Table de liaison many-to-many entre Project et Technology
+model ProjectTechnology {
+  id           String @id @default(cuid())
+  projectId    String
+  technologyId String
+  
+  project    Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  technology Technology @relation(fields: [technologyId], references: [id], onDelete: Cascade)
+  
+  @@unique([projectId, technologyId])
+  @@map(name: "project_technologies")
+}
+
+// Modèle pour stocker les configurations du site
+model SiteConfig {
+  id          String @id @default(cuid())
+  key         String @unique
+  value       String
+  description String?
+  updatedAt   DateTime @updatedAt
+  
+  @@map(name: "site_configs")
+}
