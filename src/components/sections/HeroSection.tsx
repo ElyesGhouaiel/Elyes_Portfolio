@@ -91,15 +91,15 @@ export function HeroSection({ stats }: HeroSectionProps) {
         {/* Badge animé */}
         <motion.div
           variants={itemVariants}
-          className="inline-flex items-center space-x-2 bg-white/5 backdrop-blur-lg border border-white/10 rounded-full px-6 py-3 mb-8"
+          className="inline-flex items-center space-x-2 bg-white/80 backdrop-blur-lg border border-slate-300/60 rounded-full px-6 py-3 mb-8 dark:bg-white/5 dark:border-white/10"
         >
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
           >
-            <Sparkles className="w-4 h-4 text-purple-400" />
+            <Sparkles className="w-4 h-4 text-purple-600 dark:text-purple-400" />
           </motion.div>
-          <span className="text-purple-300 text-sm font-medium">
+          <span className="text-slate-700 text-sm font-medium dark:text-purple-300">
             Portfolio Moderne • Développeur Full Stack
           </span>
         </motion.div>
@@ -124,7 +124,7 @@ export function HeroSection({ stats }: HeroSectionProps) {
         {/* Sous-titre */}
         <motion.p 
           variants={itemVariants}
-          className="text-xl md:text-2xl text-purple-200/80 max-w-4xl mx-auto mb-12 leading-relaxed"
+          className="text-xl md:text-2xl text-slate-600 max-w-4xl mx-auto mb-12 leading-relaxed dark:text-purple-200/80"
         >
           Je conçois et développe des applications web modernes, performantes et innovantes, 
           en alliant créativité technique et excellence utilisateur.
@@ -147,13 +147,13 @@ export function HeroSection({ stats }: HeroSectionProps) {
               initial="initial"
               animate="animate"
               style={{ animationDelay: `${index * 0.5}s` }}
-              className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300"
+              className="bg-white/80 backdrop-blur-lg border border-slate-300/60 rounded-2xl p-6 hover:bg-slate-100/80 transition-all duration-300 dark:bg-white/5 dark:border-white/10 dark:hover:bg-white/10"
             >
-              <stat.icon className="w-8 h-8 text-purple-400 mx-auto mb-2" />
-              <div className="text-3xl font-bold text-white mb-1">
+              <stat.icon className="w-8 h-8 text-purple-600 mx-auto mb-2 dark:text-purple-400" />
+              <div className="text-3xl font-bold text-slate-800 mb-1 dark:text-white">
                 {stat.value}+
               </div>
-              <div className="text-purple-300/80 text-sm">
+              <div className="text-slate-600 text-sm dark:text-purple-300/80">
                 {stat.label}
               </div>
             </motion.div>
@@ -198,13 +198,13 @@ export function HeroSection({ stats }: HeroSectionProps) {
           variants={itemVariants}
           className="flex flex-col items-center"
         >
-          <p className="text-purple-300/60 text-sm mb-4">Découvrez mon travail</p>
+          <p className="text-slate-500 text-sm mb-4 dark:text-purple-300/60">Découvrez mon travail</p>
           <motion.div
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
-            className="p-2 rounded-full border border-purple-500/30 bg-purple-500/10 backdrop-blur-lg"
+            className="p-2 rounded-full border border-purple-500/30 bg-purple-500/10 backdrop-blur-lg dark:border-purple-500/30 dark:bg-purple-500/10"
           >
-            <ArrowDown className="w-6 h-6 text-purple-400" />
+            <ArrowDown className="w-6 h-6 text-purple-600 dark:text-purple-400" />
           </motion.div>
         </motion.div>
       </motion.div>

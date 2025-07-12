@@ -37,7 +37,7 @@ export function TechnologiesCloud({ technologies }: TechnologiesCloudProps) {
               Technologies
             </span>
           </h2>
-          <p className="text-xl text-purple-200/80 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-600 max-w-3xl mx-auto dark:text-purple-200/80">
             Les outils et technologies que j'utilise pour créer des expériences exceptionnelles
           </p>
         </motion.div>
@@ -85,11 +85,11 @@ export function TechnologiesCloud({ technologies }: TechnologiesCloudProps) {
                 <Badge
                   className={`
                     px-4 py-2 text-sm font-medium cursor-pointer backdrop-blur-lg
-                    ${tech.category === 'frontend' ? 'bg-blue-500/20 text-blue-300 border-blue-500/30' :
-                      tech.category === 'backend' ? 'bg-green-500/20 text-green-300 border-green-500/30' :
-                      tech.category === 'database' ? 'bg-purple-500/20 text-purple-300 border-purple-500/30' :
-                      tech.category === 'tool' ? 'bg-orange-500/20 text-orange-300 border-orange-500/30' :
-                      'bg-gray-500/20 text-gray-300 border-gray-500/30'}
+                    ${tech.category === 'frontend' ? 'bg-blue-500/10 text-blue-700 border-blue-500/20 dark:bg-blue-500/20 dark:text-blue-300 dark:border-blue-500/30' :
+                      tech.category === 'backend' ? 'bg-green-500/10 text-green-700 border-green-500/20 dark:bg-green-500/20 dark:text-green-300 dark:border-green-500/30' :
+                      tech.category === 'database' ? 'bg-purple-500/10 text-purple-700 border-purple-500/20 dark:bg-purple-500/20 dark:text-purple-300 dark:border-purple-500/30' :
+                      tech.category === 'tool' ? 'bg-orange-500/10 text-orange-700 border-orange-500/20 dark:bg-orange-500/20 dark:text-orange-300 dark:border-orange-500/30' :
+                      'bg-gray-500/10 text-gray-700 border-gray-500/20 dark:bg-gray-500/20 dark:text-gray-300 dark:border-gray-500/30'}
                     hover:shadow-lg transition-all duration-300
                   `}
                 >

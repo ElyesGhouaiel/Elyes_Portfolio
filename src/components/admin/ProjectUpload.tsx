@@ -4,6 +4,7 @@ import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Upload, FileArchive, X, AlertCircle, CheckCircle } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { config, isValidFile, formatFileSize } from '@/lib/config'
 
 interface UploadedFile {
   file: File
@@ -21,17 +22,10 @@ export function ProjectUpload() {
     if (!selectedFiles) return
 
     const validFiles = Array.from(selectedFiles).filter(file => {
-      // Accepter seulement les fichiers ZIP et limiter la taille
-      const isValidType = file.type === 'application/zip' || file.name.endsWith('.zip')
-      const isValidSize = file.size <= 50 * 1024 * 1024 // 50MB max
+      const validation = isValidFile(file)
       
-      if (!isValidType) {
-        alert('Seuls les fichiers ZIP sont acceptés.')
-        return false
-      }
-      
-      if (!isValidSize) {
-        alert('Le fichier doit faire moins de 50MB.')
+      if (!validation.valid) {
+        alert(validation.error)
         return false
       }
       
@@ -65,11 +59,13 @@ export function ProjectUpload() {
   const handleUpload = async () => {
     if (files.length === 0) return
 
+    console.log('🚀 Début de l\'upload...', files.length, 'fichier(s)')
     setIsUploading(true)
     setUploadStatus('idle')
 
     try {
       for (const { file } of files) {
+        console.log(`📤 Upload de: ${file.name} (${file.size} bytes)`)
         const formData = new FormData()
         formData.append('file', file)
         
@@ -78,9 +74,16 @@ export function ProjectUpload() {
           body: formData,
         })
 
+        console.log(`📥 Réponse reçue: ${response.status} ${response.statusText}`)
+
         if (!response.ok) {
-          throw new Error(`Erreur d'upload: ${response.statusText}`)
+          const errorData = await response.json().catch(() => ({}))
+          console.error('❌ Erreur d\'upload:', errorData)
+          throw new Error(`Erreur d'upload: ${response.statusText} - ${errorData.message || ''}`)
         }
+
+        const result = await response.json()
+        console.log('✅ Upload réussi:', result)
       }
 
       setUploadStatus('success')
@@ -95,13 +98,7 @@ export function ProjectUpload() {
     }
   }
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
-    const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-  }
+
 
   return (
     <div className="space-y-4">
@@ -133,7 +130,7 @@ export function ProjectUpload() {
           Choisir des fichiers
         </Button>
         <p className="text-xs text-purple-300/60 mt-2">
-          Fichiers ZIP uniquement, max 50MB par fichier
+          Fichiers ZIP uniquement, max {config.upload.maxFileSizeMB}MB par fichier
         </p>
       </motion.div>
 
@@ -241,4 +238,3 @@ export function ProjectUpload() {
       )}
     </div>
   )
-} 

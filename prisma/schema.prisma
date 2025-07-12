@@ -17,6 +17,7 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   image         String?
+  password      String?   // Mot de passe hashé pour l'authentification par credentials
   accounts      Account[]
   sessions      Session[]
   
@@ -103,7 +104,12 @@ model Project {
   
   // Fichiers pour projets manuels
   zipFilePath String?  // Chemin vers le fichier ZIP uploadé
+  extractedPath String? // Chemin vers les fichiers extraits
   thumbnailUrl String? // URL de l'image de preview
+  
+  // Données d'analyse automatique
+  mainFiles String? // Fichiers principaux du projet (JSON string)
+  previewFiles String? // Fichiers pour l'aperçu (JSON string)
   
   // Ordre d'affichage et mise en avant
   featured    Boolean  @default(false)

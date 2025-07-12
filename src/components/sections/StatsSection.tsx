@@ -57,7 +57,7 @@ export function StatsSection({ stats }: StatsSectionProps) {
               En Chiffres
             </span>
           </h2>
-          <p className="text-xl text-purple-200/80 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-600 max-w-3xl mx-auto dark:text-purple-200/80">
             Quelques statistiques qui reflètent mon parcours et mon engagement
           </p>
         </motion.div>
@@ -72,7 +72,7 @@ export function StatsSection({ stats }: StatsSectionProps) {
               whileHover={{ scale: 1.05 }}
               className="group"
             >
-              <div className="bg-black/20 backdrop-blur-lg border border-purple-500/20 rounded-2xl p-8 text-center hover:border-purple-500/40 transition-all duration-300">
+              <div className="bg-white/80 backdrop-blur-lg border border-slate-300/60 rounded-2xl p-8 text-center hover:border-purple-500/40 transition-all duration-300 dark:bg-black/20 dark:border-purple-500/20 dark:hover:border-purple-500/40">
                 <motion.div
                   animate={{
                     rotate: [0, 5, -5, 0],
@@ -93,12 +93,12 @@ export function StatsSection({ stats }: StatsSectionProps) {
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
                   transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
-                  className="text-4xl font-bold text-white mb-2"
+                  className="text-4xl font-bold text-slate-800 mb-2 dark:text-white"
                 >
                   {stat.value}+
                 </motion.div>
 
-                <p className="text-purple-300/80 font-medium">
+                <p className="text-slate-600 font-medium dark:text-purple-300/80">
                   {stat.label}
                 </p>
               </div>

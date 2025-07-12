@@ -122,7 +122,7 @@ export function ProjectCard({ project, index, showFullDetails = false }: Project
                   </Badge>
                 )}
               </div>
-              <CardDescription className="project-description line-clamp-2 group-hover:text-slate-100 transition-colors duration-300">
+              <CardDescription className="project-description line-clamp-2 group-hover:text-slate-700 dark:group-hover:text-slate-100 transition-colors duration-300">
                 {project.description}
               </CardDescription>
             </div>
@@ -130,16 +130,16 @@ export function ProjectCard({ project, index, showFullDetails = false }: Project
 
           {/* Statistiques GitHub */}
           {project.type === 'github' && (project.stars || project.forks) && (
-            <div className="flex items-center gap-4 text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+            <div className="flex items-center gap-4 text-sm text-slate-500 group-hover:text-slate-700 transition-colors duration-300 dark:text-gray-400 dark:group-hover:text-gray-300">
               {project.stars !== null && (
                 <div className="flex items-center gap-1">
-                  <Star className="w-4 h-4 text-yellow-400" />
+                  <Star className="w-4 h-4 text-yellow-500 dark:text-yellow-400" />
                   <span>{project.stars}</span>
                 </div>
               )}
               {project.forks !== null && (
                 <div className="flex items-center gap-1">
-                  <GitFork className="w-4 h-4 text-blue-400" />
+                  <GitFork className="w-4 h-4 text-blue-500 dark:text-blue-400" />
                   <span>{project.forks}</span>
                 </div>
               )}
@@ -171,8 +171,8 @@ export function ProjectCard({ project, index, showFullDetails = false }: Project
 
           {/* Contenu détaillé */}
           {showFullDetails && project.content && (
-            <div className="mb-4 p-3 bg-black/20 rounded-lg border border-purple-500/20 group-hover:bg-black/30 transition-colors duration-300">
-              <p className="text-sm text-gray-300 line-clamp-3 group-hover:text-gray-200 transition-colors duration-300">
+            <div className="mb-4 p-3 bg-slate-100/80 rounded-lg border border-slate-300/60 group-hover:bg-slate-200/80 transition-colors duration-300 dark:bg-black/20 dark:border-purple-500/20 dark:group-hover:bg-black/30">
+              <p className="text-sm text-slate-700 line-clamp-3 group-hover:text-slate-800 transition-colors duration-300 dark:text-gray-300 dark:group-hover:text-gray-200">
                 {project.content}
               </p>
             </div>
@@ -180,7 +180,7 @@ export function ProjectCard({ project, index, showFullDetails = false }: Project
 
           {/* Date */}
           {project.startDate && (
-            <div className="flex items-center gap-2 text-sm text-gray-400 mb-4 group-hover:text-gray-300 transition-colors duration-300">
+            <div className="flex items-center gap-2 text-sm text-slate-500 mb-4 group-hover:text-slate-700 transition-colors duration-300 dark:text-gray-400 dark:group-hover:text-gray-300">
               <Calendar className="w-4 h-4" />
               <span>
                 {new Date(project.startDate).toLocaleDateString('fr-FR', { 
@@ -197,7 +197,7 @@ export function ProjectCard({ project, index, showFullDetails = false }: Project
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="flex-1 bg-black/20 border-purple-500/30 hover:bg-purple-500/30 hover:border-purple-400 text-purple-300 hover:text-white transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25"
+                className="flex-1 bg-white/80 border-purple-500/30 hover:bg-purple-500/10 hover:border-purple-400 text-purple-600 hover:text-purple-700 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 dark:bg-black/20 dark:text-purple-300 dark:hover:bg-purple-500/30 dark:hover:text-white"
                 onClick={(e) => {
                   e.preventDefault()
                   e.stopPropagation()
@@ -213,7 +213,7 @@ export function ProjectCard({ project, index, showFullDetails = false }: Project
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="flex-1 bg-black/20 border-blue-500/30 hover:bg-blue-500/30 hover:border-blue-400 text-blue-300 hover:text-white transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
+                className="flex-1 bg-white/80 border-blue-500/30 hover:bg-blue-500/10 hover:border-blue-400 text-blue-600 hover:text-blue-700 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25 dark:bg-black/20 dark:text-blue-300 dark:hover:bg-blue-500/30 dark:hover:text-white"
                 onClick={(e) => {
                   e.preventDefault()
                   e.stopPropagation()
@@ -229,7 +229,7 @@ export function ProjectCard({ project, index, showFullDetails = false }: Project
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="flex-1 bg-black/20 border-green-500/30 hover:bg-green-500/30 hover:border-green-400 text-green-300 hover:text-white transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-500/25"
+                className="flex-1 bg-white/80 border-green-500/30 hover:bg-green-500/10 hover:border-green-400 text-green-600 hover:text-green-700 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-500/25 dark:bg-black/20 dark:text-green-300 dark:hover:bg-green-500/30 dark:hover:text-white"
                 onClick={(e) => {
                   e.preventDefault()
                   e.stopPropagation()

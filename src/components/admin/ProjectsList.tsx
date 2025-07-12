@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -13,8 +14,15 @@ import {
   Edit,
   Trash2,
   Eye,
-  Settings
+  Settings,
+  Loader2,
+  CheckCircle,
+  AlertCircle,
+  Code,
+  Play
 } from 'lucide-react'
+import { ProjectEditModal } from './ProjectEditModal'
+import { CodePreview } from './CodePreview'
 
 interface Technology {
   id: string
@@ -46,9 +54,16 @@ interface Project {
 
 interface ProjectsListProps {
   projects: Project[]
+  onProjectUpdate?: () => void
 }
 
-export function ProjectsList({ projects }: ProjectsListProps) {
+export function ProjectsList({ projects, onProjectUpdate }: ProjectsListProps) {
+  const [editingProject, setEditingProject] = useState<Project | null>(null)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState<string | null>(null)
+  const [deleteStatus, setDeleteStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [codePreviewProject, setCodePreviewProject] = useState<Project | null>(null)
+  const [isCodePreviewOpen, setIsCodePreviewOpen] = useState(false)
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('fr-FR', {
       day: 'numeric',
@@ -75,6 +90,80 @@ export function ProjectsList({ projects }: ProjectsListProps) {
       default:
         return <Eye className="w-4 h-4" />
     }
+  }
+
+  const handleEditProject = (project: Project) => {
+    setEditingProject(project)
+    setIsEditModalOpen(true)
+  }
+
+  const handleSaveProject = async (updatedData: any) => {
+    if (!editingProject) return
+
+    try {
+      const response = await fetch(`/api/projects/${editingProject.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedData),
+      })
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour')
+      }
+
+      // Rafraîchir la liste
+      if (onProjectUpdate) {
+        onProjectUpdate()
+      }
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde:', error)
+      throw error
+    }
+  }
+
+  const handleDeleteProject = async (projectId: string) => {
+    setIsDeleting(projectId)
+    setDeleteStatus('idle')
+
+    try {
+      const response = await fetch(`/api/projects/${projectId}`, {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la suppression')
+      }
+
+      setDeleteStatus('success')
+      setTimeout(() => {
+        if (onProjectUpdate) {
+          onProjectUpdate()
+        }
+        setDeleteStatus('idle')
+      }, 1000)
+    } catch (error) {
+      console.error('Erreur lors de la suppression:', error)
+      setDeleteStatus('error')
+      setTimeout(() => setDeleteStatus('idle'), 3000)
+    } finally {
+      setIsDeleting(null)
+    }
+  }
+
+  const handleOpenCodePreview = (project: Project) => {
+    setCodePreviewProject(project)
+    setIsCodePreviewOpen(true)
+  }
+
+  const handleCloseCodePreview = () => {
+    setIsCodePreviewOpen(false)
+    setCodePreviewProject(null)
+  }
+
+  const handleOpenDemo = (projectId: string) => {
+    window.open(`/api/projects/${projectId}/demo`, '_blank')
   }
 
   if (projects.length === 0) {
@@ -206,6 +295,30 @@ export function ProjectsList({ projects }: ProjectsListProps) {
                         Demo
                       </Button>
                     )}
+                    {project.type === 'manual' && (
+                      <>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="border-blue-500/50 text-blue-300 hover:bg-blue-500/10"
+                          onClick={() => handleOpenCodePreview(project)}
+                        >
+                          <Code className="w-3 h-3 mr-1" />
+                          Code
+                        </Button>
+                        {/* Temporairement commenté - Demo à implémenter plus tard
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="border-orange-500/50 text-orange-300 hover:bg-orange-500/10"
+                          onClick={() => handleOpenDemo(project.id)}
+                        >
+                          <Play className="w-3 h-3 mr-1" />
+                          Demo
+                        </Button>
+                        */}
+                      </>
+                    )}
                   </div>
                 </div>
 
@@ -215,22 +328,34 @@ export function ProjectsList({ projects }: ProjectsListProps) {
                     variant="outline"
                     size="sm"
                     className="border-blue-500/50 text-blue-300 hover:bg-blue-500/10"
+                    onClick={() => handleEditProject(project)}
                   >
                     <Edit className="w-3 h-3" />
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="border-gray-500/50 text-gray-300 hover:bg-gray-500/10"
+                    className={`transition-all duration-300 ${
+                      isDeleting === project.id
+                        ? 'border-yellow-500/50 text-yellow-300'
+                        : deleteStatus === 'success'
+                        ? 'border-green-500/50 text-green-300'
+                        : deleteStatus === 'error'
+                        ? 'border-red-500/50 text-red-300'
+                        : 'border-red-500/50 text-red-300 hover:bg-red-500/10'
+                    }`}
+                    onClick={() => handleDeleteProject(project.id)}
+                    disabled={isDeleting === project.id}
                   >
-                    <Settings className="w-3 h-3" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-red-500/50 text-red-300 hover:bg-red-500/10"
-                  >
-                    <Trash2 className="w-3 h-3" />
+                    {isDeleting === project.id ? (
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                    ) : deleteStatus === 'success' ? (
+                      <CheckCircle className="w-3 h-3" />
+                    ) : deleteStatus === 'error' ? (
+                      <AlertCircle className="w-3 h-3" />
+                    ) : (
+                      <Trash2 className="w-3 h-3" />
+                    )}
                   </Button>
                 </div>
               </div>
@@ -238,6 +363,25 @@ export function ProjectsList({ projects }: ProjectsListProps) {
           </Card>
         </motion.div>
       ))}
+
+      {/* Modal d'édition */}
+      <ProjectEditModal
+        project={editingProject}
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false)
+          setEditingProject(null)
+        }}
+        onSave={handleSaveProject}
+      />
+
+      {/* Modal d'aperçu du code */}
+      <CodePreview
+        projectId={codePreviewProject?.id || ''}
+        projectTitle={codePreviewProject?.title || ''}
+        isOpen={isCodePreviewOpen}
+        onClose={handleCloseCodePreview}
+      />
     </div>
   )
 } 

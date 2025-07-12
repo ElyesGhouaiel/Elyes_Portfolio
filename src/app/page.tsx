@@ -72,20 +72,20 @@ export default async function HomePage() {
       <main className="relative z-10">
         {/* Section Hero avec animation 3D */}
         <section id="hero">
-          <HeroSection stats={stats} />
+        <HeroSection stats={stats} />
         </section>
 
         {/* Section Projets */}
         <section id="projects">
-          <ProjectsGrid 
-            featuredProjects={featuredProjects}
-            allProjects={allProjects}
-          />
+        <ProjectsGrid 
+          featuredProjects={featuredProjects}
+          allProjects={allProjects}
+        />
         </section>
 
         {/* Nuage de technologies interactif */}
         <section id="about">
-          <TechnologiesCloud technologies={technologies} />
+        <TechnologiesCloud technologies={technologies} />
         </section>
 
         {/* Statistiques animées */}
@@ -93,24 +93,11 @@ export default async function HomePage() {
 
         {/* Section Contact */}
         <section id="contact">
-          <ContactSection />
+        <ContactSection />
         </section>
       </main>
 
-      {/* Effets de parallax et particles */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 via-purple-900/30 to-slate-900/50" />
-        
-        {/* Grille futuriste animée */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="h-full w-full bg-[linear-gradient(rgba(139,92,246,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.1)_1px,transparent_1px)] bg-[size:100px_100px] animate-pulse" />
-        </div>
 
-        {/* Lignes d'énergie */}
-        <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent animate-pulse" />
-        <div className="absolute top-2/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent animate-pulse delay-1000" />
-        <div className="absolute top-3/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-pink-500/40 to-transparent animate-pulse delay-2000" />
-      </div>
     </div>
   )
 }

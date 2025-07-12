@@ -9,12 +9,20 @@ import { Search, Filter, X } from 'lucide-react'
 interface ProjectsFilterProps {
   projects: any[]
   technologies: any[]
+  filters: {
+    searchTerm: string
+    selectedCategory: string | null
+    selectedTechnology: string | null
+  }
+  onFiltersChange: (filters: {
+    searchTerm?: string
+    selectedCategory?: string | null
+    selectedTechnology?: string | null
+  }) => void
 }
 
-export function ProjectsFilter({ projects, technologies }: ProjectsFilterProps) {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [selectedTechnology, setSelectedTechnology] = useState<string | null>(null)
+export function ProjectsFilter({ projects, technologies, filters, onFiltersChange }: ProjectsFilterProps) {
+  const { searchTerm, selectedCategory, selectedTechnology } = filters
 
   const categories = [
     { id: 'all', name: 'Tous', count: projects.length },
@@ -30,9 +38,11 @@ export function ProjectsFilter({ projects, technologies }: ProjectsFilterProps) 
     .slice(0, 10)
 
   const clearFilters = () => {
-    setSearchTerm('')
-    setSelectedCategory(null)
-    setSelectedTechnology(null)
+    onFiltersChange({
+      searchTerm: '',
+      selectedCategory: null,
+      selectedTechnology: null
+    })
   }
 
   const hasActiveFilters = searchTerm || selectedCategory || selectedTechnology
@@ -46,16 +56,16 @@ export function ProjectsFilter({ projects, technologies }: ProjectsFilterProps) 
           type="text"
           placeholder="Rechercher un projet..."
           value={searchTerm}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
-          className="w-full pl-10 pr-4 py-2 glass-card border border-purple-500/20 bg-black/20 text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onFiltersChange({ searchTerm: e.target.value })}
+          className="w-full pl-10 pr-4 py-2 bg-white/80 border border-slate-300/60 text-slate-700 placeholder-slate-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 dark:bg-slate-800/80 dark:border-slate-600/60 dark:text-slate-200 dark:placeholder-slate-400 backdrop-blur-sm transition-all duration-200"
         />
       </div>
 
       {/* Filtres par catégorie */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-3">
-          <Filter className="w-4 h-4 text-purple-400" />
-          <span className="text-sm font-medium text-gray-300">Catégories</span>
+          <Filter className="w-4 h-4 text-purple-500 dark:text-purple-400" />
+          <span className="text-sm font-medium text-slate-700 dark:text-gray-300">Catégories</span>
         </div>
         <div className="flex flex-wrap gap-2">
           {categories.map((category) => (
@@ -63,15 +73,19 @@ export function ProjectsFilter({ projects, technologies }: ProjectsFilterProps) 
               key={category.id}
               variant={selectedCategory === category.id ? "default" : "outline"}
               size="sm"
-              onClick={() => setSelectedCategory(selectedCategory === category.id ? null : category.id)}
+              onClick={() => onFiltersChange({ selectedCategory: selectedCategory === category.id ? null : category.id })}
               className={`${
                 selectedCategory === category.id 
-                  ? 'bg-purple-500 hover:bg-purple-600' 
-                  : 'bg-black/20 border-purple-500/30 hover:bg-purple-500/20'
-              }`}
+                  ? 'bg-purple-500 hover:bg-purple-600 text-white border-purple-500' 
+                  : 'bg-white/80 border-slate-300/60 hover:bg-slate-100/80 text-slate-700 hover:text-slate-900 dark:bg-slate-800/80 dark:border-slate-600/60 dark:hover:bg-slate-700/80 dark:text-slate-200 dark:hover:text-white'
+              } transition-all duration-200 backdrop-blur-sm`}
             >
               {category.name}
-              <Badge variant="secondary" className="ml-2 bg-white/20">
+              <Badge variant="secondary"               className={`ml-2 ${
+                selectedCategory === category.id 
+                  ? 'bg-white/30 text-white' 
+                  : 'bg-slate-200/80 text-slate-600 dark:bg-slate-700/80 dark:text-slate-300'
+              }`}>
                 {category.count}
               </Badge>
             </Button>
@@ -82,7 +96,7 @@ export function ProjectsFilter({ projects, technologies }: ProjectsFilterProps) 
       {/* Filtres par technologie */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-sm font-medium text-gray-300">Technologies populaires</span>
+          <span className="text-sm font-medium text-slate-700 dark:text-gray-300">Technologies populaires</span>
         </div>
         <div className="flex flex-wrap gap-2">
           {topTechnologies.map((tech) => (
@@ -90,19 +104,23 @@ export function ProjectsFilter({ projects, technologies }: ProjectsFilterProps) 
               key={tech.id}
               variant={selectedTechnology === tech.id ? "default" : "outline"}
               size="sm"
-              onClick={() => setSelectedTechnology(selectedTechnology === tech.id ? null : tech.id)}
+              onClick={() => onFiltersChange({ selectedTechnology: selectedTechnology === tech.id ? null : tech.id })}
               className={`${
                 selectedTechnology === tech.id 
-                  ? 'bg-purple-500 hover:bg-purple-600' 
-                  : 'bg-black/20 border-purple-500/30 hover:bg-purple-500/20'
-              }`}
+                  ? 'bg-purple-500 hover:bg-purple-600 text-white border-purple-500' 
+                  : 'bg-white/80 border-slate-300/60 hover:bg-slate-100/80 text-slate-700 hover:text-slate-900 dark:bg-slate-800/80 dark:border-slate-600/60 dark:hover:bg-slate-700/80 dark:text-slate-200 dark:hover:text-white'
+              } transition-all duration-200 backdrop-blur-sm`}
               style={{
                 borderColor: selectedTechnology === tech.id ? undefined : tech.color,
                 color: selectedTechnology === tech.id ? undefined : tech.color
               }}
             >
               {tech.icon} {tech.name}
-              <Badge variant="secondary" className="ml-2 bg-white/20">
+              <Badge variant="secondary"               className={`ml-2 ${
+                selectedTechnology === tech.id 
+                  ? 'bg-white/30 text-white' 
+                  : 'bg-slate-200/80 text-slate-600 dark:bg-slate-700/80 dark:text-slate-300'
+              }`}>
                 {tech.projects.length}
               </Badge>
             </Button>
@@ -117,12 +135,12 @@ export function ProjectsFilter({ projects, technologies }: ProjectsFilterProps) 
             variant="outline"
             size="sm"
             onClick={clearFilters}
-            className="bg-black/20 border-gray-500/30 hover:bg-gray-500/20"
+            className="bg-white/80 border-slate-300/60 hover:bg-slate-100/80 text-slate-700 hover:text-slate-900 dark:bg-slate-800/80 dark:border-slate-600/60 dark:hover:bg-slate-700/80 dark:text-slate-200 dark:hover:text-white transition-all duration-200 backdrop-blur-sm"
           >
             <X className="w-4 h-4 mr-2" />
             Effacer les filtres
           </Button>
-          <span className="text-sm text-gray-400">
+          <span className="text-sm text-slate-500 dark:text-gray-400">
             {searchTerm && `Recherche: "${searchTerm}"`}
             {selectedCategory && ` • Catégorie: ${categories.find(c => c.id === selectedCategory)?.name}`}
             {selectedTechnology && ` • Technologie: ${topTechnologies.find(t => t.id === selectedTechnology)?.name}`}

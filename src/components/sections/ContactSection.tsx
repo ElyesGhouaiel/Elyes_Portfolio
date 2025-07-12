@@ -20,7 +20,7 @@ export function ContactSection() {
               Travaillons Ensemble
             </span>
           </h2>
-          <p className="text-xl text-purple-200/80 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-600 max-w-3xl mx-auto dark:text-purple-200/80">
             Vous avez un projet en tête ? N'hésitez pas à me contacter pour en discuter
           </p>
         </motion.div>
@@ -32,42 +32,42 @@ export function ContactSection() {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <Card className="bg-black/20 backdrop-blur-lg border border-purple-500/20">
+            <Card className="bg-white/80 backdrop-blur-lg border border-slate-300/60 dark:bg-black/20 dark:border-purple-500/20">
               <CardContent className="p-8">
-                <h3 className="text-2xl font-bold text-white mb-6">
+                <h3 className="text-2xl font-bold text-slate-800 mb-6 dark:text-white">
                   Envoyez-moi un message
                 </h3>
                 
                 <form className="space-y-6">
                   <div>
-                    <label className="block text-purple-300 text-sm font-medium mb-2">
+                    <label className="block text-slate-700 text-sm font-medium mb-2 dark:text-purple-300">
                       Nom complet
                     </label>
                     <input
                       type="text"
-                      className="w-full px-4 py-3 bg-black/30 border border-purple-500/30 rounded-lg text-white placeholder-purple-300/50 focus:border-purple-500 focus:outline-none transition-colors"
+                      className="w-full px-4 py-3 bg-white/80 border border-slate-300/60 rounded-lg text-slate-800 placeholder-slate-500 focus:border-purple-500 focus:outline-none transition-colors dark:bg-black/30 dark:border-purple-500/30 dark:text-white dark:placeholder-purple-300/50"
                       placeholder="Votre nom"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-purple-300 text-sm font-medium mb-2">
+                    <label className="block text-slate-700 text-sm font-medium mb-2 dark:text-purple-300">
                       Email
                     </label>
                     <input
                       type="email"
-                      className="w-full px-4 py-3 bg-black/30 border border-purple-500/30 rounded-lg text-white placeholder-purple-300/50 focus:border-purple-500 focus:outline-none transition-colors"
+                      className="w-full px-4 py-3 bg-white/80 border border-slate-300/60 rounded-lg text-slate-800 placeholder-slate-500 focus:border-purple-500 focus:outline-none transition-colors dark:bg-black/30 dark:border-purple-500/30 dark:text-white dark:placeholder-purple-300/50"
                       placeholder="votre.email@exemple.com"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-purple-300 text-sm font-medium mb-2">
+                    <label className="block text-slate-700 text-sm font-medium mb-2 dark:text-purple-300">
                       Message
                     </label>
                     <textarea
                       rows={5}
-                      className="w-full px-4 py-3 bg-black/30 border border-purple-500/30 rounded-lg text-white placeholder-purple-300/50 focus:border-purple-500 focus:outline-none transition-colors resize-none"
+                      className="w-full px-4 py-3 bg-white/80 border border-slate-300/60 rounded-lg text-slate-800 placeholder-slate-500 focus:border-purple-500 focus:outline-none transition-colors resize-none dark:bg-black/30 dark:border-purple-500/30 dark:text-white dark:placeholder-purple-300/50"
                       placeholder="Décrivez votre projet ou votre demande..."
                     />
                   </div>
@@ -98,10 +98,10 @@ export function ContactSection() {
             className="space-y-8"
           >
             <div>
-              <h3 className="text-2xl font-bold text-white mb-6">
+              <h3 className="text-2xl font-bold text-slate-800 mb-6 dark:text-white">
                 Contactez-moi directement
               </h3>
-              <p className="text-purple-200/80 mb-8">
+              <p className="text-slate-600 mb-8 dark:text-purple-200/80">
                 Préférez-vous un contact direct ? Voici mes différents canaux de communication.
               </p>
             </div>
@@ -139,15 +139,15 @@ export function ContactSection() {
                   className="group cursor-pointer"
                   onClick={() => window.open(contact.href, '_blank')}
                 >
-                  <Card className="bg-black/20 backdrop-blur-lg border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300">
+                  <Card className="bg-white/80 backdrop-blur-lg border border-slate-300/60 hover:border-purple-500/40 transition-all duration-300 dark:bg-black/20 dark:border-purple-500/20">
                     <CardContent className="p-6">
                       <div className="flex items-center space-x-4">
                         <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${contact.color} flex items-center justify-center`}>
                           <contact.icon className="w-6 h-6 text-white" />
                         </div>
                         <div>
-                          <h4 className="text-white font-semibold">{contact.title}</h4>
-                          <p className="text-purple-300/80 text-sm group-hover:text-purple-200 transition-colors">{contact.value}</p>
+                          <h4 className="text-slate-800 font-semibold dark:text-white">{contact.title}</h4>
+                          <p className="text-slate-600 text-sm group-hover:text-slate-800 transition-colors dark:text-purple-300/80 dark:group-hover:text-purple-200">{contact.value}</p>
                         </div>
                       </div>
                     </CardContent>
